@@ -1,0 +1,16 @@
+sudo: required
+
+language: bash
+
+service: 
+  - docker
+
+install:
+  - echo "nothing to install"
+
+script:
+  - echo "no test"
+
+after_success:
+  - docker --version
+  - docker build -t kodelint/centos07-tools
