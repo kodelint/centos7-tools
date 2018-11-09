@@ -4,7 +4,7 @@ jobs:
   include:
   - stage: build docker image
     script:
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker build -t  centos7-tools-$TRAVIS_BUILD_NUMBER
     - docker images
     - docker tag centos7-tools-$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER
