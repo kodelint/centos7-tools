@@ -1,15 +1,20 @@
 sudo: true
 dist: centos
-
 jobs:
   include:
-    - stage: build docker image
-      script:
-      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      - docker build -t  centos7-tools-$TRAVIS_BUILD_NUMBER
-      - docker images
-      - docker tag centos7-tools-$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER
-      - docker push $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER
-    - stage: test
-      script: docker run --rm $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER yum list curl telnet iputils wget git
-    - script: docker run --rm $$DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER ping google.com
+  - stage: build docker image
+    script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build -t  centos7-tools-$TRAVIS_BUILD_NUMBER
+    - docker images
+    - docker tag centos7-tools-$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER
+    - docker push $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER
+  - stage: test
+    script: docker run --rm $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER yum
+      list curl telnet iputils wget git
+  - script: docker run --rm $$DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER ping
+      google.com
+env:
+  global:
+  - secure: BmtUqjeH4LAKtGeGXYSYUvdEh8nse9+wGBlbVlM+DvT8XYVb61P4Ehy3wPVq/tIBnrUN1XlVyUBVXJ37zojMt3syvXRrSfUMmXf8lUvly9+rR2Oc2LEM13Ye3udZqkAGJAhRjo+wNE4+rLQto8430nqztSuyb270lbm5d3CrLGSaA5Kui/eqQSW/B52EDSKZXqFofPAQGbiW6nIAldOw38CdGaBSw7xMwCXecbbsZFX+Nbigo+FFE4a3eT4ZSGNKVvs+UuPs5QD7Mx8g/fPibH/kk3s515mFIUQpT+9QKJm6l+TrRWBXmwdRggQTCKpcDG2FC6kqz2VMUux3y5+dTcad24IdC2cVXIapuO4BHqSpIdViccgTsgdHOkkNlPBT6yLZGythLPlG3Sw1ChjOc0asK/SSvjhze5SsMopVcIyx/CDn9MBxXulb2UklIdaW/AP9BcpL9R0kxBLKlnTnep/hybzPV1yu8kTA3cxykPSd/iJQKYc6if1Z8WVGqITY5/0IFrMYaEg0M+/ZaGn+R18TYh6mMkYilMmZ0OSsKAt95FFWFBwW45gwrbOizzrxGSkyKTW17xq0nJ9/aKI105kA4lLQpZ5QQrm9lwY5dSYGiftz+qCOniZDUnPdUUTvwTKu9Jn7t5bzsetb3Sdwoyi8/kUMTAATXM8OV65FXmc=
+  - secure: o8XW/j/thu9xGqgzL9XsutP61BWIHJ1V27UDRS6oqKRVNWrO4mwPkaipy1J14PMmMmSrNDzroputoR05sFVM4UVFiqb2ImAtF506ozHwpa1S/TBabU1lHCdo26eS9FkORYynDbXeA3Yu4nPfZiNvgwKzMBX/oTQGAdmyNlFdfxGOyRBa9K1NO+pyiAotsq5McW3DtH6zuxERwDsBA8C6n2/nNr7XuZ8KTlG8SNkoMlA3jJfswpE9ACzfRWfvvLg74s7U3wjVCVOD5lOGPciLZxreHiRtXJHSfl/8pxYVc+sLwAe/QEWYNeN4i57Ci021GGfyKOmsww2ScO1tQpd1+mjuEkuLzZK9P6MTsr6XP/KCcJrqTbMTdOqYACZYl8YLu6/iM9hINicB8HlyATm+0X1uKuNb062sXmUFVr+4HVyaV2Co1Z0MNDvRDf74YeG1Pv2pXEwtv54M8leYUh5JFF+iv0b/81i2t0iyEAvnVIMaefd51UsNQCKTw0ats2sySO8uNuh2z5Cpvmp5/4X8m+wbadyeKUug/jdUoE5OhzmlJRbVBWbzaExzFIGiqpwiI2XhR0KkjTZol6Bw/WjgxEP4MzlfLEFGt1IkDz4U6Bd86+9nKPDeYTBEnhVchL3ycS1EP6xsMArrac3DRjjMNNMGXKujGn4xTJvfW2SHxx8=
