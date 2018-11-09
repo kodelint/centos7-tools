@@ -1,16 +1,15 @@
-sudo: required
+sudo: true
+dist: centos
 
-language: bash
-
-service: 
-  - docker
-
-install:
-  - echo "nothing to install"
-
-script:
-  - echo "no test"
-
-after_success:
-  - docker --version
-  - docker build -t kodelint/centos07-tools
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker build -t  centos7-tools-$TRAVIS_BUILD_NUMBER
+      - docker images
+      - docker tag centos7-tools-$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER
+      - docker push $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER
+    - stage: test
+      script: docker run --rm $DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER yum list curl telnet iputils wget git
+    - script: docker run --rm $$DOCKER_USERNAME/centos7-tools-$TRAVIS_BUILD_NUMBER ping google.com
