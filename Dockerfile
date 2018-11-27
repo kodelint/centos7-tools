@@ -1,4 +1,5 @@
 FROM centos:centos7
+# Adding comments
 
 LABEL maintainer="kodelint"
 LABEL maintainer_email="kodelint@gmail.com"
